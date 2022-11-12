@@ -16,7 +16,7 @@ npm install huff-deployer --save-dev
 You need to have the Huff compiler (Rust version) installed in your machine. To install the compiler go to: https://github.com/huff-language/huff-rs
 
 
-## Usage
+## Usage
 
 Add the following to your `hardhat.config.js` file:
 
