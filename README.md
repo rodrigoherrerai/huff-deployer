@@ -47,6 +47,8 @@ describe("Owned", () => {
 });
 ```
 
+It will automatically generate a Solidity interface file for your Huff contract, under the same directory.
+
 huffDeployer.deploy accepts 3 parameters: 
 
 1. targetContract: The name of the Huff contract.
