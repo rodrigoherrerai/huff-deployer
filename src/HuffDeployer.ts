@@ -22,6 +22,7 @@ export class HuffDeployer {
    */
   public async deploy(
     targetContract: string,
+    generateSolidityInterface?: boolean,
     constructorArgs?: any[],
     signer?: Signer
   ): Promise<Contract> {
@@ -30,6 +31,15 @@ export class HuffDeployer {
       signer = signers[0];
     }
 
-    return deploy.bind(this)(targetContract, signer, constructorArgs);
+    const generateInterface = generateSolidityInterface
+      ? generateSolidityInterface
+      : false;
+
+    return deploy.bind(this)(
+      targetContract,
+      signer,
+      generateInterface,
+      constructorArgs
+    );
   }
 }

@@ -129,6 +129,24 @@ function getContractAbi(filePath: string): string[] {
 }
 
 /**
+ * @notice Deletes the auto generated .sol files.
+ */
+function clean(filePath: string): void {
+  filePath = filePath.replace("huff", "sol");
+  const lastSlashIndex = filePath.lastIndexOf("/");
+  filePath =
+    filePath.slice(0, lastSlashIndex + 1) +
+    "I" +
+    filePath.slice(lastSlashIndex + 1);
+
+  try {
+    fs.unlinkSync(filePath);
+  } catch (err) {
+    console.error(`Error deleting ${filePath}: ${err}`);
+  }
+}
+
+/**
  * Deploys a Huff contract.
  * @returns The deployed contract.
  *
@@ -138,6 +156,7 @@ export async function deploy(
   this: HuffDeployer,
   targetContract: string,
   signer: Signer,
+  generateInterface: boolean,
   constructorArgs?: any[]
 ): Promise<Contract> {
   await verifyHuffCompiler();
@@ -173,6 +192,10 @@ export async function deploy(
         contract = await factory.deploy();
       } catch (e) {
         throw new Error(`Error deploying ${targetContract}: ${e}`);
+      }
+
+      if (!generateInterface) {
+        clean(filePath);
       }
     }
   }
