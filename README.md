@@ -38,7 +38,8 @@ describe("Owned", () => {
   it("should change the owner", async () => {
     const [owner, newOwner] = await ethers.getSigners();
 
-    const owned = await huffDeployer.deploy("Owned", [owner.address]); // <--- Deploy the contract
+    const owned = await huffDeployer.deploy("Owned", false,
+    [owner.address]); // <--- Deploy the contract
     expect(await owned.owner()).to.equal(owner.address);
 
     await owned.setOwner(newOwner.address);
@@ -52,8 +53,9 @@ It will automatically generate a Solidity interface file for your Huff contract,
 huffDeployer.deploy accepts 3 arguments: 
 
 1. targetContract: The name of the Huff contract.
-2. constructorArgs (optional): The constructor arguments. 
-3. signer (optional): It will default to Hardhat's signer 0.
+2. generateSolidityInterface (optional): Optionally generates a solidity interface.
+3. constructorArgs (optional): The constructor arguments. 
+4. signer (optional): It will default to Hardhat's signer 0.
 
 Check the [examples](https://github.com/rodrigoherrerai/huff-deployer/tree/main/examples) folder for a more comprehensive view. 
 
