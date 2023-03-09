@@ -43,7 +43,7 @@ describe("HuffDeployer", function () {
   describe("Owned", function () {
     it("should correctly deploy", async function () {
       const [owner] = await this.hre.ethers.getSigners();
-      const owned = await this.hre.huffDeployer.deploy("Owned", [
+      const owned = await this.hre.huffDeployer.deploy("Owned", false, [
         owner.address,
       ]);
       assert(owned.address);
@@ -51,7 +51,7 @@ describe("HuffDeployer", function () {
 
     it("should set a new owner", async function () {
       const [owner] = await this.hre.ethers.getSigners();
-      const owned = await this.hre.huffDeployer.deploy("Owned", [
+      const owned = await this.hre.huffDeployer.deploy("Owned", false, [
         owner.address,
       ]);
 

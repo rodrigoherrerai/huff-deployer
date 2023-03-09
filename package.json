@@ -1,6 +1,6 @@
 {
   "name": "huff-deployer",
-  "version": "1.0.1",
+  "version": "1.0.4",
   "description": "Hardhat Plugin To Test Huff Contracts",
   "repository": "github:rodrigoherrerai/huff-deployer",
   "author": "Rodrigo Herrera I.",
