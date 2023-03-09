@@ -48,12 +48,11 @@ describe("Owned", () => {
 });
 ```
 
-It will automatically generate a Solidity interface file for your Huff contract, under the same directory.
 
 huffDeployer.deploy accepts 3 arguments: 
 
 1. targetContract: The name of the Huff contract.
-2. generateSolidityInterface (optional): Optionally generates a solidity interface.
+2. generateSolidityInterface (optional): Optionally generates a Solidity interface.
 3. constructorArgs (optional): The constructor arguments. 
 4. signer (optional): It will default to Hardhat's signer 0.
 
