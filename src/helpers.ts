@@ -12,6 +12,7 @@ import { HuffDeployer } from "./HuffDeployer";
 export interface CompilerArg {
   key: number;
   value: number;
+  full: boolean;
 }
 
 /**
@@ -58,7 +59,8 @@ async function getContractBytecode(
     if (compilerArgs) {
       argString = " ";
       for (const arg of compilerArgs) {
-        argString = argString + ` -${arg.key} ${arg.value}`;
+        const key = arg.full ? `--${arg.key}` : `-${arg.key}`;
+        argString = argString + ` ${key} ${arg.value}`;
       }
     }
 
