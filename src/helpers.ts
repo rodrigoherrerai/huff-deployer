@@ -10,8 +10,8 @@ import { HuffDeployer } from "./HuffDeployer";
  * Describes an argument to be passed to the Huff compiler
  */
 export interface CompilerArg {
-  key: number;
-  value: number;
+  key: string;
+  value: string;
   full: boolean;
 }
 
