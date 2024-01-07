@@ -1,8 +1,7 @@
 import { Contract, Signer } from "ethers";
 import { ProviderWrapper } from "hardhat/internal/core/providers/wrapper";
 import { HardhatRuntimeEnvironment } from "hardhat/types";
-
-import { deploy } from "./helpers";
+import { CompilerArg, deploy } from "./helpers";
 
 /**
  * HuffDeployer - Hardhat plugin for deploying Huff contracts.
@@ -15,6 +14,7 @@ export class HuffDeployer {
    *
    * @param targetContract The name of the huff contract to deploy.
    * @param constructorArgs The constructor arguments for the contract.
+   * @param compilerArgs Optionally specify arguments to pass to the huff compiler
    * @param signer The signer to use for the deployment.
    *               It left undefined, the signer 0 from Hardhat will be used.
    *
@@ -24,6 +24,7 @@ export class HuffDeployer {
     targetContract: string,
     generateSolidityInterface?: boolean,
     constructorArgs?: any[],
+    compilerArgs?: CompilerArg[],
     signer?: Signer
   ): Promise<Contract> {
     if (signer === undefined) {
@@ -39,7 +40,8 @@ export class HuffDeployer {
       targetContract,
       signer,
       generateInterface,
-      constructorArgs
+      constructorArgs,
+      compilerArgs
     );
   }
 }

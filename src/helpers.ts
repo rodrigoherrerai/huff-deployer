@@ -7,6 +7,14 @@ import { HardhatPluginError } from "hardhat/plugins";
 import { HuffDeployer } from "./HuffDeployer";
 
 /**
+ * Describes an argument to be passed to the Huff compiler
+ */
+export interface CompilerArg {
+  key: number;
+  value: number;
+}
+
+/**
  * Verifies that the Huff compiler (Rust version) is installed.
  */
 async function verifyHuffCompiler(): Promise<void> {
@@ -33,27 +41,42 @@ async function verifyHuffCompiler(): Promise<void> {
 
 /**
  * @param filePath The path to the file where the contract is located.
+ * @param constructorArgs The arguments to pass to the contract constructor
+ * @param compilerArgs Optionally specify arguments to pass to the huff compiler
  * @returns The contract bytecode.
  */
 async function getContractBytecode(
   filePath: string,
-  constructorArgs?: any[]
+  constructorArgs?: any[],
+  compilerArgs?: CompilerArg[]
 ): Promise<string> {
   const output: string = await new Promise((resolve, reject) => {
     let process: ChildProcess;
 
+    let argString = "";
+
+    if (compilerArgs) {
+      argString = " ";
+      for (const arg of compilerArgs) {
+        argString = argString + ` -${arg.key} ${arg.value}`;
+      }
+    }
+
     if (constructorArgs === undefined) {
-      process = exec(`huffc ${filePath} --bytecode`, (err, stdout) => {
-        if (err !== null) {
-          return reject(err);
+      process = exec(
+        `huffc ${filePath} --bytecode${argString}`,
+        (err, stdout) => {
+          if (err !== null) {
+            return reject(err);
+          }
+          resolve(stdout);
         }
-        resolve(stdout);
-      });
+      );
     } else {
       const args = constructorArgs.join(" ");
 
       process = exec(
-        `huffc ${filePath} -i ${args} --bytecode`,
+        `huffc ${filePath} -i ${args} --bytecode${argString}`,
         (err, stdout) => {
           if (err !== null) {
             return reject(err);
@@ -157,7 +180,8 @@ export async function deploy(
   targetContract: string,
   signer: Signer,
   generateInterface: boolean,
-  constructorArgs?: any[]
+  constructorArgs?: any[],
+  compilerArgs?: CompilerArg[]
 ): Promise<Contract> {
   await verifyHuffCompiler();
 
@@ -172,7 +196,11 @@ export async function deploy(
     );
 
     if (targetContract.toLowerCase() === contractName.toLowerCase()) {
-      const bytecode = await getContractBytecode(filePath, constructorArgs);
+      const bytecode = await getContractBytecode(
+        filePath,
+        constructorArgs,
+        compilerArgs
+      );
 
       // We auto generate  the contract interface.
       await generateContractInterface(filePath);
